@@ -1,10 +1,15 @@
 import { experimental_extendTheme as extendTheme } from '@mui/material/styles'
 import { teal, deepOrange, cyan, orange } from '@mui/material/colors'
 
+const APP_BAR_HEIGHT = '58px'
+const BOARD_BAR_HEIGHT = '60px'
+const BOARD_CONTENT_HEIGHT = `calc(100% - ${APP_BAR_HEIGHT} - ${BOARD_BAR_HEIGHT})`
+
 const theme = extendTheme({
   customes: {
-    appBarHeight: '48px',
-    boardBarHeight: '58px'
+    appBarHeight: APP_BAR_HEIGHT,
+    boardBarHeight: BOARD_BAR_HEIGHT,
+    boardConentHeight: BOARD_CONTENT_HEIGHT
   },
   colorSchemes: {
     light: {

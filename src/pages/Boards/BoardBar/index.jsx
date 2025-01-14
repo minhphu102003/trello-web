@@ -77,7 +77,7 @@ function BoardBar() {
       </Box>
       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 2 }}>
         <Button variant="outlined" startIcon={<PersonAddIcon />} sx={{ mr: 2 }}>Invite</Button>
-        <AvatarGroup max={4} sx={{ '& .MuiAvatar-root': { width: 32, height: 32 } }}>
+        <AvatarGroup max={4} sx={{ '& .MuiAvatar-root': { width: 32, height: 32, cursor: 'pointer', color: 'white', '&:first-of-type': { bgcolor: '#a4b0be' } } }}>
           <Tooltip title="gabimaru" arrow>
             <Avatar alt="Remy Sharp" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRhoJ7GtinNx7FfFrDp0UDw7350qgp66Fe77w&s" />
           </Tooltip>

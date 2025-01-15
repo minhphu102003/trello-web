@@ -8,9 +8,21 @@ import Divider from '@mui/material/Divider'
 import ListItemText from '@mui/material/ListItemText'
 import ListItemIcon from '@mui/material/ListItemIcon'
 import ContentCut from '@mui/icons-material/ContentCut'
-import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+import ContentCopy from '@mui/icons-material/ContentCopy'
+import ContentPaste from '@mui/icons-material/ContentPaste'
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever'
 import Cloud from '@mui/icons-material/Cloud'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
+import AddCardIcon from '@mui/icons-material/AddCard'
+import Button from '@mui/material/Button'
+import DragHandleIcon from '@mui/icons-material/DragHandle'
+import Card from '@mui/material/Card';
+import CardActions from '@mui/material/CardActions'
+import CardContent from '@mui/material/CardContent'
+import CardMedia from '@mui/material/CardMedia'
+import GroupIcon from '@mui/icons-material/Group'
+import ModeCommentIcon from '@mui/icons-material/ModeComment'
+import AttachFileIcon from '@mui/icons-material/AttachFile'
 
 const COLUMN_HEADER_HEIGHT = '50px'
 const COLUMN_FOOTER_HEIGHT = '56px'
@@ -26,85 +38,420 @@ function BoardContent() {
   }
   return (
     <Box sx={{
+      paddingTop: 1.5,
       backgroundColor: 'primary.main',
       width: '100%',
       height: (theme) => theme.customes.boardConentHeight,
-      display: 'flex'
+      p: '10px 0'
     }}>
       <Box sx={{
-        minWidth: '300px',
-        maxWidth: '300px',
-        bgcolor: (theme) => (theme.palette.mode === 'dark' ? '#333643' : '#ebecf0'),
-        ml: 2,
-        borderRadius: '6px'
+        bgcolor: 'inherit',
+        width: '100%',
+        height: '100%',
+        display: 'flex',
+        overflowX: 'auto',
+        overflowY: 'hidden',
+        '&::-webkit-scrollbar-thumb': {
+          backgroundColor: '#ced0da'
+        },
+        '&::-webkit-scrollbar-thumb:hover': {
+          backgroundColor: '#bfc2cf'
+        },
+        '&::-webkit-scrollbar-track': {
+          m: 2
+        },
       }}>
         <Box sx={{
-          height: COLUMN_HEADER_HEIGHT,
-          p: 2,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between'
+          minWidth: '300px',
+          maxWidth: '300px',
+          bgcolor: (theme) => (theme.palette.mode === 'dark' ? '#333643' : '#ebecf0'),
+          ml: 2,
+          borderRadius: '6px',
+          height: 'fit-content',
+          maxHeight: (theme) => `calc(${theme.customes.boardConentHeight} - ${theme.spacing(5)})`
         }}>
-          <Typography>Column Title</Typography>
-          <Box>
-            <Tooltip title="More option">
-              <ExpandMoreIcon
-                sx={{
-                  color: 'text.primary',
-                  cursor: 'pointer'
+          <Box sx={{
+            height: COLUMN_HEADER_HEIGHT,
+            p: 2,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between'
+          }}>
+            <Typography variant='h' sx={{
+              fontSize: '1rem',
+              fontWeight: 'bold',
+              cursor: 'pointer'
+            }}>Column Title</Typography>
+            <Box>
+              <Tooltip title="More option">
+                <ExpandMoreIcon
+                  sx={{
+                    color: 'text.primary',
+                    cursor: 'pointer'
+                  }}
+                  id="basic-column-dropdown"
+                  aria-controls={open ? 'basic-menu-column-dropdown' : undefined}
+                  aria-haspopup="true"
+                  aria-expanded={open ? 'true' : undefined}
+                  onClick={handleClick}
+                />
+              </Tooltip>
+              <Menu
+                id="basic-menu-column-dropdown"
+                anchorEl={anchorEl}
+                open={open}
+                onClose={handleClose}
+                MenuListProps={{
+                  'aria-labelledby': 'basic-button-column'
                 }}
-                id="basic-column-dropdown"
-                aria-controls={open ? 'basic-menu-column-dropdown' : undefined}
-                aria-haspopup="true"
-                aria-expanded={open ? 'true' : undefined}
-                onClick={handleClick}
+              >
+                <MenuItem>
+                  <ListItemIcon>
+                    <AddCardIcon fontSize="small" />
+                  </ListItemIcon>
+                  <ListItemText>Add new card</ListItemText>
+                </MenuItem>
+                <MenuItem>
+                  <ListItemIcon>
+                    <ContentCut fontSize="small" />
+                  </ListItemIcon>
+                  <ListItemText>Cut</ListItemText>
+                </MenuItem>
+                <MenuItem>
+                  <ListItemIcon>
+                    <ContentCopy fontSize="small" />
+                  </ListItemIcon>
+                  <ListItemText>Copy</ListItemText>
+                </MenuItem>
+                <MenuItem>
+                  <ListItemIcon>
+                    <ContentPaste fontSize="small" />
+                  </ListItemIcon>
+                  <ListItemText>Paste</ListItemText>
+                </MenuItem>
+                <Divider />
+                <MenuItem>
+                  <ListItemIcon>
+                    <Cloud fontSize="small" />
+                  </ListItemIcon>
+                  <ListItemText>Archive this column</ListItemText>
+                </MenuItem>
+                <MenuItem>
+                  <ListItemIcon>
+                    <DeleteForeverIcon fontSize="small" />
+                  </ListItemIcon>
+                  <ListItemText>Remove this column</ListItemText>
+                </MenuItem>
+              </Menu>
+            </Box>
+          </Box>
+          <Box sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            gap: 1.5,
+            p: '0 5px',
+            m: '0 5px',
+            overflowX: 'hidden',
+            overflowY: 'auto',
+            maxHeight: (theme) => `calc(${theme.customes.boardConentHeight} 
+            - ${theme.spacing(5)}
+            - ${COLUMN_HEADER_HEIGHT}
+            - ${COLUMN_FOOTER_HEIGHT})`,
+            '&::-webkit-scrollbar-thumb': {
+              backgroundColor: '#ced0da'
+            },
+            '&::-webkit-scrollbar-thumb:hover': {
+              backgroundColor: '#bfc2cf'
+            }
+          }}>
+            <Card sx={{
+              cursor: 'pointer',
+              boxShadow: '0 1px 1px rgba(0,0,,0,0.2)',
+              overflow: 'unset'
+            }}>
+              <CardMedia
+                component="img"
+                alt="green iguana"
+                height="140"
+                image="https://cdn.epicstream.com/images/ncavvykf/epicstream/05cacb652cb6cd3ec0d73ee486b884a641403994-1920x1080.jpg?auto=format"
               />
-            </Tooltip>
-            <Menu
-              id="basic-menu-column-dropdown"
-              anchorEl={anchorEl}
-              open={open}
-              onClose={handleClose}
-              MenuListProps={{
-                'aria-labelledby': 'basic-button-column'
-              }}
-            >
-              <MenuItem onClick={handleClose}>
-                <ListItemIcon>
-                  <ContentCut fontSize="small" />
-                </ListItemIcon>
-                <ListItemText>Cut</ListItemText>
-                <Typography variant="body2" color="text.secondary">
-                  ⌘X
+              <CardContent sx={{ p: 1.5, '&:last-child': { p: 1.5 } }}>
+                <Typography>
+                  Lizard
                 </Typography>
-              </MenuItem>
-              <Divider />
-              <MenuItem>
-                <ListItemIcon>
-                  <Cloud fontSize="small" />
-                </ListItemIcon>
-                <ListItemText>Archive this column</ListItemText>
-              </MenuItem>
-              <MenuItem>
-                <ListItemIcon>
-                  <DeleteForeverIcon fontSize="small" />
-                </ListItemIcon>
-                <ListItemText>Remove this column</ListItemText>
-              </MenuItem>
-            </Menu>
+              </CardContent>
+              <CardActions sx={{ p: '0 4px 8px 4px' }}>
+                <Button startIcon={<GroupIcon />} size="small">20</Button>
+                <Button startIcon={<ModeCommentIcon />} size="small">25</Button>
+                <Button startIcon={<AttachFileIcon />} size="small">30</Button>
+              </CardActions>
+            </Card>
+            <Card sx={{
+              cursor: 'pointer',
+              boxShadow: '0 1px 1px rgba(0,0,,0,0.2)',
+              overflow: 'unset'
+            }}>
+              <CardContent sx={{ p: 1.5, '&:last-child': { p: 1.5 } }}>
+                <Typography>
+                  Lizard
+                </Typography>
+              </CardContent>
+            </Card>
+            <Card sx={{
+              cursor: 'pointer',
+              boxShadow: '0 1px 1px rgba(0,0,,0,0.2)',
+              overflow: 'unset'
+            }}>
+              <CardContent sx={{ p: 1.5, '&:last-child': { p: 1.5 } }}>
+                <Typography>
+                  Lizard
+                </Typography>
+              </CardContent>
+            </Card>
+            <Card sx={{
+              cursor: 'pointer',
+              boxShadow: '0 1px 1px rgba(0,0,,0,0.2)',
+              overflow: 'unset'
+            }}>
+              <CardContent sx={{ p: 1.5, '&:last-child': { p: 1.5 } }}>
+                <Typography>
+                  Lizard
+                </Typography>
+              </CardContent>
+            </Card>
+            <Card sx={{
+              cursor: 'pointer',
+              boxShadow: '0 1px 1px rgba(0,0,,0,0.2)',
+              overflow: 'unset'
+            }}>
+              <CardContent sx={{ p: 1.5, '&:last-child': { p: 1.5 } }}>
+                <Typography>
+                  Lizard
+                </Typography>
+              </CardContent>
+            </Card>
+            <Card sx={{
+              cursor: 'pointer',
+              boxShadow: '0 1px 1px rgba(0,0,,0,0.2)',
+              overflow: 'unset'
+            }}>
+              <CardContent sx={{ p: 1.5, '&:last-child': { p: 1.5 } }}>
+                <Typography>
+                  Lizard
+                </Typography>
+              </CardContent>
+            </Card>
+            <Card sx={{
+              cursor: 'pointer',
+              boxShadow: '0 1px 1px rgba(0,0,,0,0.2)',
+              overflow: 'unset'
+            }}>
+              <CardContent sx={{ p: 1.5, '&:last-child': { p: 1.5 } }}>
+                <Typography>
+                  Lizard
+                </Typography>
+              </CardContent>
+            </Card>
+            <Card sx={{
+              cursor: 'pointer',
+              boxShadow: '0 1px 1px rgba(0,0,,0,0.2)',
+              overflow: 'unset'
+            }}>
+              <CardContent sx={{ p: 1.5, '&:last-child': { p: 1.5 } }}>
+                <Typography>
+                  Lizard
+                </Typography>
+              </CardContent>
+            </Card>
+            <Card sx={{
+              cursor: 'pointer',
+              boxShadow: '0 1px 1px rgba(0,0,,0,0.2)',
+              overflow: 'unset'
+            }}>
+              <CardContent sx={{ p: 1.5, '&:last-child': { p: 1.5 } }}>
+                <Typography>
+                  Lizard
+                </Typography>
+              </CardContent>
+            </Card>
+          </Box>
+          <Box sx={{
+            height: COLUMN_FOOTER_HEIGHT,
+            p: 2,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between'
+          }}>
+            <Button startIcon={<AddCardIcon />} >
+              Add new card
+            </Button>
+            <Tooltip title="Drag to move">
+              <DragHandleIcon sx={{ cursor: 'pointer' }} />
+            </Tooltip>
           </Box>
         </Box>
-        <Box sx={{}}>
-          List card
-        </Box>
         <Box sx={{
-          height: COLUMN_FOOTER_HEIGHT,
-          p: 2,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between'
+          minWidth: '300px',
+          maxWidth: '300px',
+          bgcolor: (theme) => (theme.palette.mode === 'dark' ? '#333643' : '#ebecf0'),
+          ml: 2,
+          borderRadius: '6px',
+          height: 'fit-content',
+          maxHeight: (theme) => `calc(${theme.customes.boardConentHeight} - ${theme.spacing(5)})`
         }}>
-          Footer
+          <Box sx={{
+            height: COLUMN_HEADER_HEIGHT,
+            p: 2,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between'
+          }}>
+            <Typography variant='h' sx={{
+              fontSize: '1rem',
+              fontWeight: 'bold',
+              cursor: 'pointer'
+            }}>Column Title</Typography>
+            <Box>
+              <Tooltip title="More option">
+                <ExpandMoreIcon
+                  sx={{
+                    color: 'text.primary',
+                    cursor: 'pointer'
+                  }}
+                  id="basic-column-dropdown"
+                  aria-controls={open ? 'basic-menu-column-dropdown' : undefined}
+                  aria-haspopup="true"
+                  aria-expanded={open ? 'true' : undefined}
+                  onClick={handleClick}
+                />
+              </Tooltip>
+              <Menu
+                id="basic-menu-column-dropdown"
+                anchorEl={anchorEl}
+                open={open}
+                onClose={handleClose}
+                MenuListProps={{
+                  'aria-labelledby': 'basic-button-column'
+                }}
+              >
+                <MenuItem>
+                  <ListItemIcon>
+                    <AddCardIcon fontSize="small" />
+                  </ListItemIcon>
+                  <ListItemText>Add new card</ListItemText>
+                </MenuItem>
+                <MenuItem>
+                  <ListItemIcon>
+                    <ContentCut fontSize="small" />
+                  </ListItemIcon>
+                  <ListItemText>Cut</ListItemText>
+                </MenuItem>
+                <MenuItem>
+                  <ListItemIcon>
+                    <ContentCopy fontSize="small" />
+                  </ListItemIcon>
+                  <ListItemText>Copy</ListItemText>
+                </MenuItem>
+                <MenuItem>
+                  <ListItemIcon>
+                    <ContentPaste fontSize="small" />
+                  </ListItemIcon>
+                  <ListItemText>Paste</ListItemText>
+                </MenuItem>
+                <Divider />
+                <MenuItem>
+                  <ListItemIcon>
+                    <Cloud fontSize="small" />
+                  </ListItemIcon>
+                  <ListItemText>Archive this column</ListItemText>
+                </MenuItem>
+                <MenuItem>
+                  <ListItemIcon>
+                    <DeleteForeverIcon fontSize="small" />
+                  </ListItemIcon>
+                  <ListItemText>Remove this column</ListItemText>
+                </MenuItem>
+              </Menu>
+            </Box>
+          </Box>
+          <Box sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            gap: 1.5,
+            p: '0 5px',
+            m: '0 5px',
+            overflowX: 'hidden',
+            overflowY: 'auto',
+            maxHeight: (theme) => `calc(${theme.customes.boardConentHeight} 
+            - ${theme.spacing(5)}
+            - ${COLUMN_HEADER_HEIGHT}
+            - ${COLUMN_FOOTER_HEIGHT})`,
+            '&::-webkit-scrollbar-thumb': {
+              backgroundColor: '#ced0da'
+            },
+            '&::-webkit-scrollbar-thumb:hover': {
+              backgroundColor: '#bfc2cf'
+            }
+          }}>
+            <Card sx={{
+              cursor: 'pointer',
+              boxShadow: '0 1px 1px rgba(0,0,,0,0.2)',
+              overflow: 'unset'
+            }}>
+              <CardMedia
+                component="img"
+                alt="green iguana"
+                height="140"
+                image="https://cdn.epicstream.com/images/ncavvykf/epicstream/05cacb652cb6cd3ec0d73ee486b884a641403994-1920x1080.jpg?auto=format"
+              />
+              <CardContent sx={{ p: 1.5, '&:last-child': { p: 1.5 } }}>
+                <Typography>
+                  Lizard
+                </Typography>
+              </CardContent>
+              <CardActions sx={{ p: '0 4px 8px 4px' }}>
+                <Button startIcon={<GroupIcon />} size="small">20</Button>
+                <Button startIcon={<ModeCommentIcon />} size="small">25</Button>
+                <Button startIcon={<AttachFileIcon />} size="small">30</Button>
+              </CardActions>
+            </Card>
+            <Card sx={{
+              cursor: 'pointer',
+              boxShadow: '0 1px 1px rgba(0,0,,0,0.2)',
+              overflow: 'unset'
+            }}>
+              <CardContent sx={{ p: 1.5, '&:last-child': { p: 1.5 } }}>
+                <Typography>
+                  Lizard
+                </Typography>
+              </CardContent>
+            </Card>
+            <Card sx={{
+              cursor: 'pointer',
+              boxShadow: '0 1px 1px rgba(0,0,,0,0.2)',
+              overflow: 'unset'
+            }}>
+              <CardContent sx={{ p: 1.5, '&:last-child': { p: 1.5 } }}>
+                <Typography>
+                  Lizard
+                </Typography>
+              </CardContent>
+            </Card>
+          </Box>
+          <Box sx={{
+            height: COLUMN_FOOTER_HEIGHT,
+            p: 2,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between'
+          }}>
+            <Button startIcon={<AddCardIcon />} >
+              Add new card
+            </Button>
+            <Tooltip title="Drag to move">
+              <DragHandleIcon sx={{ cursor: 'pointer' }} />
+            </Tooltip>
+          </Box>
         </Box>
       </Box>
     </Box>

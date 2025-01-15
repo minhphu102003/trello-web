@@ -3,7 +3,7 @@ import { teal, deepOrange, cyan, orange } from '@mui/material/colors'
 
 const APP_BAR_HEIGHT = '58px'
 const BOARD_BAR_HEIGHT = '60px'
-const BOARD_CONTENT_HEIGHT = `calc(100% - ${APP_BAR_HEIGHT} - ${BOARD_BAR_HEIGHT})`
+const BOARD_CONTENT_HEIGHT = `calc(100vh - ${APP_BAR_HEIGHT} - ${BOARD_BAR_HEIGHT})`
 
 const theme = extendTheme({
   customes: {
@@ -51,6 +51,15 @@ const theme = extendTheme({
         // Name of the slot
         root: {
           textTransform: 'none'
+        }
+      }
+    },
+    MuiTypography: {
+      styleOverrides: {
+        root: {
+          '&.MuiTypography-body1':{
+            fontSize: '0.875rem'
+          }
         }
       }
     },

@@ -10,6 +10,7 @@ import AvatarGroup from '@mui/material/AvatarGroup'
 import Button from '@mui/material/Button'
 import Tooltip from '@mui/material/Tooltip'
 import PersonAddIcon from '@mui/icons-material/PersonAdd'
+import PropTypes from 'prop-types'
 
 const MENU_STYLE = {
   backgroundColor: 'white',
@@ -26,7 +27,8 @@ const MENU_STYLE = {
   }
 }
 
-function BoardBar() {
+function BoardBar({ board }) {
+
   return (
     <Box px={2} sx={{
       width: '100%',
@@ -42,14 +44,14 @@ function BoardBar() {
         <Chip
           sx={MENU_STYLE}
           icon={<DashboardIcon />}
-          label="Label with dashboard icon"
+          label={board?.title}
           clickable
           onClick={() => { }}
         />
         <Chip
           sx={MENU_STYLE}
           icon={<VpnLockIcon />}
-          label="Public/private workspace"
+          label={board?.type}
           clickable
           onClick={() => { }}
         />
@@ -97,6 +99,12 @@ function BoardBar() {
       </Box>
     </Box>
   )
+}
+
+BoardBar.propTypes = {
+  board: PropTypes.shape({
+    title: PropTypes.string.isRequired
+  }).isRequired
 }
 
 export default BoardBar

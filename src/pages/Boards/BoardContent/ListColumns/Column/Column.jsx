@@ -17,8 +17,9 @@ import AddCardIcon from '@mui/icons-material/AddCard'
 import Button from '@mui/material/Button'
 import DragHandleIcon from '@mui/icons-material/DragHandle'
 import ListCards from './ListCards/ListCards'
+import PropTypes from 'prop-types'
 
-function Column() {
+function Column({ column }) {
   const [anchorEl, setAnchorEl] = useState(null)
   const open = Boolean(anchorEl)
   const handleClick = (event) => {
@@ -58,7 +59,7 @@ function Column() {
             cursor: 'pointer',
           }}
         >
-          Column Title
+          {column?.title}
         </Typography>
         <Box>
           <Tooltip title='More option'>
@@ -124,7 +125,7 @@ function Column() {
         </Box>
       </Box>
 
-      <ListCards />
+      <ListCards cards={column.cards} />
 
       <Box
         sx={{
@@ -142,6 +143,14 @@ function Column() {
       </Box>
     </Box>
   )
+}
+
+Column.propTypes = {
+  column: PropTypes.shape({
+    _id: PropTypes.string.isRequired, // ID của cột
+    title: PropTypes.string.isRequired, // Tiêu đề của cột
+    cards: PropTypes.array.isRequired // Mảng các card
+  }).isRequired
 }
 
 export default Column

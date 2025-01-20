@@ -2,8 +2,9 @@ import Box from '@mui/material/Box'
 import Column from './Column/Column'
 import Button from '@mui/material/Button'
 import NoteAddIcon from '@mui/icons-material/NoteAdd'
+import PropTypes from 'prop-types'
 
-function ListColumns() {
+function ListColumns({ columns }) {
 
   return (
     <Box
@@ -25,8 +26,9 @@ function ListColumns() {
         },
       }}
     >
-      <Column />
-      <Column />
+      {columns?.map((column) => {
+        return <Column column={column} key={column._id} />
+      })}
 
       <Box
         sx={{
@@ -53,4 +55,10 @@ function ListColumns() {
   );
 }
 
-export default ListColumns;
+ListColumns.propTypes = {
+  columns: PropTypes.shape({
+    column: PropTypes.object.isRequired
+  }).isRequired
+}
+
+export default ListColumns

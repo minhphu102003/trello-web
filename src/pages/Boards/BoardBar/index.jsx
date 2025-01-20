@@ -11,6 +11,7 @@ import Button from '@mui/material/Button'
 import Tooltip from '@mui/material/Tooltip'
 import PersonAddIcon from '@mui/icons-material/PersonAdd'
 import PropTypes from 'prop-types'
+import { capitalizeFirstLetter } from '~/utils/formatters.js'
 
 const MENU_STYLE = {
   backgroundColor: 'white',
@@ -51,7 +52,7 @@ function BoardBar({ board }) {
         <Chip
           sx={MENU_STYLE}
           icon={<VpnLockIcon />}
-          label={board?.type}
+          label={capitalizeFirstLetter(board?.type)}
           clickable
           onClick={() => { }}
         />
@@ -103,7 +104,8 @@ function BoardBar({ board }) {
 
 BoardBar.propTypes = {
   board: PropTypes.shape({
-    title: PropTypes.string.isRequired
+    title: PropTypes.string.isRequired,
+    type: PropTypes.string.isRequired
   }).isRequired
 }
 

@@ -1,7 +1,8 @@
 import Box from '@mui/material/Box'
 import Card from './Card/Card'
+import PropTypes from 'prop-types'
 
-function ListCards() {
+function ListCards({ cards }) {
   return (
     <Box
       sx={{
@@ -24,12 +25,15 @@ function ListCards() {
         },
       }}
     >
-      <Card />
-      <Card temporaryHideMedia />
-      <Card temporaryHideMedia />
-      <Card temporaryHideMedia />
+      {cards.map(card => (<Card card={card} key={card._id} />))}
     </Box>
   )
+}
+
+ListCards.propTypes = {
+  cards: PropTypes.shape({ // Tiêu đề của cột
+    card: PropTypes.object.isRequired // Mảng các card
+  }).isRequired
 }
 
 export default ListCards

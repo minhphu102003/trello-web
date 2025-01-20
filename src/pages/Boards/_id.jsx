@@ -2,7 +2,7 @@ import { Container } from '@mui/material'
 import AppBar from '~/components/AppBar'
 import BoardBar from './BoardBar'
 import BoardContent from './BoardContent'
-import {mockData} from '~/apis/mock-data.js'
+import { mockData } from '~/apis/mock-data.js'
 
 function Board() {
   return (

@@ -9,56 +9,52 @@ import ModeCommentIcon from '@mui/icons-material/ModeComment'
 import AttachFileIcon from '@mui/icons-material/AttachFile'
 import PropTypes from 'prop-types'
 
-function Card({ temporaryHideMedia }) {
-  if (temporaryHideMedia) {
-    return (
-      <MuiCard
-        sx={{
-          cursor: 'pointer',
-          boxShadow: '0 1px 1px rgba(0,0,0,0.2)',
-          overflow: 'unset'
-        }}
-      >
-        <CardContent sx={{ p: 1.5, '&:last-child': { p: 1.5 } }}>
-          <Typography>Lizard</Typography>
-        </CardContent>
-      </MuiCard>
-    )
+function Card({ card }) {
+  const shouldShowCardActions = () => {
+    return !!card?.memberIds?.length || !!card?.comments?.length || !!card?.attachments?.length;
   }
+
   return (
     <MuiCard
     sx={{
       cursor: 'pointer',
       boxShadow: '0 1px 1px rgba(0,0,,0,0.2)',
-      overflow: 'unset',
+      overflow: 'unset'
     }}
   >
-    <CardMedia
+    {card?.cover && <CardMedia
       component='img'
       alt='green iguana'
       height='140'
-      image='https://cdn.epicstream.com/images/ncavvykf/epicstream/05cacb652cb6cd3ec0d73ee486b884a641403994-1920x1080.jpg?auto=format'
-    />
+      image={card?.cover}
+    />}
     <CardContent sx={{ p: 1.5, '&:last-child': { p: 1.5 } }}>
-      <Typography>Lizard</Typography>
+      <Typography>{card?.title}</Typography>
     </CardContent>
-    <CardActions sx={{ p: '0 4px 8px 4px' }}>
-      <Button startIcon={<GroupIcon />} size='small'>
-        20
-      </Button>
-      <Button startIcon={<ModeCommentIcon />} size='small'>
-        25
-      </Button>
-      <Button startIcon={<AttachFileIcon />} size='small'>
-        30
-      </Button>
-    </CardActions>
+    { shouldShowCardActions() && <CardActions sx={{ p: '0 4px 8px 4px' }}>
+      {!!card?.memberIds?.length && <Button startIcon={<GroupIcon />} size='small'>
+        {card?.memberIds?.length}
+      </Button>}
+      {!!card?.comments?.length && <Button startIcon={<ModeCommentIcon />} size='small'>
+        {card?.comments?.length}
+      </Button>}
+      {!!card?.attachments?.length && <Button startIcon={<AttachFileIcon />} size='small'>
+        {card?.attachments?.length}
+      </Button>}
+    </CardActions>}
   </MuiCard>
   )
 }
 
 Card.propTypes = {
-  temporaryHideMedia: PropTypes.bool // hoặc PropTypes.any nếu kiểu không rõ ràng
+  card: PropTypes.shape({
+    title: PropTypes.string.isRequired,
+    cover: PropTypes.string,
+    memberIds: PropTypes.arrayOf(PropTypes.string), // Mảng ID của thành viên
+    comments: PropTypes.arrayOf(PropTypes.string), // Mảng các nhận xét
+    attachments: PropTypes.arrayOf(PropTypes.string) // Mảng các tệp đính kèm
+  }).isRequired
 }
+
 
 export default Card

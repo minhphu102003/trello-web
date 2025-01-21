@@ -18,6 +18,7 @@ import Button from '@mui/material/Button'
 import DragHandleIcon from '@mui/icons-material/DragHandle'
 import ListCards from './ListCards/ListCards'
 import PropTypes from 'prop-types'
+import { mapOrder } from '~/utils/sort.js'
 
 function Column({ column }) {
   const [anchorEl, setAnchorEl] = useState(null)
@@ -28,6 +29,8 @@ function Column({ column }) {
   const handleClose = () => {
     setAnchorEl(null)
   }
+
+  const orderedCard = mapOrder(column?.cards, column?.cardOrderIds, '_id')
   return (
     <Box
       sx={{
@@ -125,7 +128,7 @@ function Column({ column }) {
         </Box>
       </Box>
 
-      <ListCards cards={column.cards} />
+      <ListCards cards={orderedCard} />
 
       <Box
         sx={{
@@ -149,7 +152,8 @@ Column.propTypes = {
   column: PropTypes.shape({
     _id: PropTypes.string.isRequired, // ID của cột
     title: PropTypes.string.isRequired, // Tiêu đề của cột
-    cards: PropTypes.array.isRequired // Mảng các card
+    cards: PropTypes.array.isRequired, // Mảng các card
+    cardOrderIds: PropTypes.array.isRequired
   }).isRequired
 }
 

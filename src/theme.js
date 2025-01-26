@@ -67,6 +67,13 @@ const theme = extendTheme({
         }
       }
     },
+    MuiPaper: {
+      styleOverrides: {
+        root: {
+          'boxShadow': 'none'
+        }
+      }
+    },
     MuiInputLabel: {
       styleOverrides: {
         // Name of the slot

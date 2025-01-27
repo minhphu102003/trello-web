@@ -17,7 +17,7 @@ import { useState, useEffect } from 'react'
 import { arrayMove } from '@dnd-kit/sortable'
 import Column from './ListColumns/Column/Column'
 import Card from './ListColumns/Column/ListCards/Card/Card'
-import { cloneDeep } from 'lodash'
+import { cloneDeep, set } from 'lodash'
 
 const ACTIVE_DRAG_ITEM_TYPE = {
   COLUMN: 'ACTIVE_DRAG_ITEM_TYPE_COLUMN',
@@ -37,8 +37,10 @@ function BoardContent({ board }) {
 
   const [orderedColumnsState, setOrderedColumnsState] = useState([])
 
+  const [activeDragItemId, setActiveDragItemId] = useState(null)
   const [activeDragItemType, setActiveDragItemType] = useState(null)
   const [activeDragItemData, setActiveDragItemData] = useState(null)
+  const [oldColumnWhenDraggingCard, setOldColumnWhenDraggingCard] = useState(null)
 
   useEffect(() => {
     const orderedColumns = mapOrder(board?.columns, board?.columnOrderIds, '_id')
@@ -46,8 +48,13 @@ function BoardContent({ board }) {
   }, [board])
 
   const handleDragStart = (event) => {
+    setActiveDragItemId(event?.active?.id)
     setActiveDragItemType(event?.active?.data?.current?.columnId ? ACTIVE_DRAG_ITEM_TYPE.CARD : ACTIVE_DRAG_ITEM_TYPE.COLUMN)
     setActiveDragItemData(event?.active?.data?.current)
+
+    if (event?.active?.data?.current?.columnId) {
+      setOldColumnWhenDraggingCard(findColumnByCardId(event?.active?.id))
+    }
   }
 
   // Tìm 1 column theo card id
@@ -67,26 +74,64 @@ function BoardContent({ board }) {
 
   const handleDragEnd = (event) => {
     const { active, over } = event
-    if (!over) return
-    if (active.id != over.id) {
-      const oldIndex = orderedColumnsState.findIndex( c => c._id === active.id)
-      const newIndex = orderedColumnsState.findIndex( c => c._id === over.id)
+    if (!over || !active) return
 
-      const dndOrderedColumns = arrayMove(orderedColumnsState, oldIndex, newIndex)
-      // Dùng biến dưới này sau khi sửa dữ liệu thông qua api
-      // const idDndOrderedColumns = dndOrderedColumns.map( c => c._id)
+    if (activeDragItemType === ACTIVE_DRAG_ITEM_TYPE.CARD) {
+      const { id: activeDraggingCardId, data: { current : activeDraggingCardData } } = active
+      const { id: overCardId } = over
 
-      setOrderedColumnsState(dndOrderedColumns)
+      // console.log(activeDraggingCardId)
+      // console.log(overCardId)
+
+      const activeColumn = findColumnByCardId(activeDraggingCardId)
+      const overColumn = findColumnByCardId(overCardId)
+
+      if ( !activeColumn || ! overColumn) return
+
+      if (oldColumnWhenDraggingCard._id !== overColumn._id) {
+        //
+      } else {
+        // Nếu thẻ được kéo thả trong cùng 1 cột
+        const oldIndex = oldColumnWhenDraggingCard?.cards?.findIndex( c => c._id === activeDragItemId)
+
+        const newIndex = overColumn?.cards?.findIndex( c => c._id === overCardId)
+
+        const dndOrderedCards = arrayMove(oldColumnWhenDraggingCard?.cards, oldIndex, newIndex)
+
+        setOrderedColumnsState(prevColumns => {
+          const nextColumns = cloneDeep(prevColumns)
+
+          const targetColumn = nextColumns.find(column => column._id === overColumn._id)
+          targetColumn.cards = dndOrderedCards
+          targetColumn.cardOrderIds = dndOrderedCards.map( c => c._id)
+          return nextColumns
+        })
+      }
     }
+
+    if (activeDragItemType === ACTIVE_DRAG_ITEM_TYPE.COLUMN) {
+      if (active.id != over.id) {
+        const oldIndex = orderedColumnsState.findIndex( c => c._id === active.id)
+        const newIndex = orderedColumnsState.findIndex( c => c._id === over.id)
+
+        const dndOrderedColumns = arrayMove(orderedColumnsState, oldIndex, newIndex)
+        // Dùng biến dưới này sau khi sửa dữ liệu thông qua api
+        // const idDndOrderedColumns = dndOrderedColumns.map( c => c._id)
+
+        setOrderedColumnsState(dndOrderedColumns)
+      }
+    }
+    setActiveDragItemId(null)
     setActiveDragItemType(null)
     setActiveDragItemData(null)
+    setOldColumnWhenDraggingCard(null)
   }
 
   const handleDragOver = (event) => {
     if (activeDragItemType === ACTIVE_DRAG_ITEM_TYPE.COLUMN) return
     const { active, over } = event
     if (!over || !active ) return
-    
+
     const { id: activeDraggingCardId, data: { current : activeDraggingCardData } } = active
     const { id: overCardId } = over
 

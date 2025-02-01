@@ -40,7 +40,8 @@ function Card({ card }) {
       sx={{
         cursor: 'pointer',
         boxShadow: '0 1px 1px rgba(0,0,,0,0.2)',
-        overflow: 'unset'
+        overflow: 'unset',
+        display: card?.FE_PlaceholderCard ? 'none' : 'block'
       }}
     >
       {card?.cover && <CardMedia
@@ -74,7 +75,8 @@ Card.propTypes = {
     cover: PropTypes.string,
     memberIds: PropTypes.arrayOf(PropTypes.string), // Mảng ID của thành viên
     comments: PropTypes.arrayOf(PropTypes.string), // Mảng các nhận xét
-    attachments: PropTypes.arrayOf(PropTypes.string) // Mảng các tệp đính kèm
+    attachments: PropTypes.arrayOf(PropTypes.string), // Mảng các tệp đính kèm
+    FE_PlaceholderCard: PropTypes.bool
   }).isRequired
 }
 

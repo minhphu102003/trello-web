@@ -192,9 +192,14 @@ function BoardContent({ board }) {
     }
 
     const pointerInteraction = pointerWithin(args)
-    const intersection = pointerInteraction.length > 0 ? pointerInteraction : rectIntersection(args)
 
-    let overId = getFirstCollision(intersection, 'id')
+    if (!pointerInteraction?.length) {
+      return
+    }
+
+    // const intersection = pointerInteraction.length > 0 ? pointerInteraction : rectIntersection(args)
+
+    let overId = getFirstCollision(pointerInteraction, 'id')
     if (overId) {
       const intersectColumn = orderedColumnsState.find(column => column._id === overId)
       if (intersectColumn) {
